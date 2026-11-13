@@ -81,7 +81,7 @@ Légende du code
 
 ## Version LaTeX
 
-Les sources LaTeX de la version déposée sur Zenodo sont archivées dans la branche [`latex`](https://github.com/dieudo13/apprendre-epi-info/tree/latex) et dans l'étiquette [`v1.0`](https://github.com/dieudo13/apprendre-epi-info/tree/v1.0), téléchargeable en [archive ZIP](https://github.com/dieudo13/apprendre-epi-info/archive/refs/tags/v1.0.zip).
+Les sources LaTeX de la version déposée sur Zenodo sont archivées dans la branche [`latex`](https://github.com/dieudo13/apprendre-epi-info/tree/latex), téléchargeable en [archive ZIP](https://github.com/dieudo13/apprendre-epi-info/archive/refs/heads/latex.zip).
 
 ## Citer ce guide
 
