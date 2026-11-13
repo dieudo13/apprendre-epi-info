@@ -1,0 +1,70 @@
+project:
+  type: book
+  output-dir: _book
+
+lang: fr
+
+book:
+  title: "Apprendre Epi Info 7"
+  subtitle: "Guide pratique d'analyse épidémiologique et statistique"
+  author: "OUEDRAOGO Ahmed Dieudonné"
+  date: "2026"
+  date-format: "YYYY"
+  cover-image: img/couverture.jpg
+  cover-image-alt: "Couverture du livre Apprendre Epi Info 7"
+  license: "CC BY-NC-SA"
+  doi: "10.5281/zenodo.24182020"
+  site-url: https://dieudo13.github.io/apprendre-epi-info
+  repo-url: https://github.com/dieudo13/apprendre-epi-info
+  repo-actions: [edit, issue]
+  # Le PDF n'est pas généré ici : il est téléchargeable sur Zenodo
+  sidebar:
+    tools:
+      - icon: file-earmark-pdf
+        href: https://doi.org/10.5281/zenodo.24182020
+        text: "Télécharger le PDF (Zenodo)"
+  search: true
+  page-navigation: true
+  page-footer:
+    center: |
+      © 2026 OUEDRAOGO Ahmed Dieudonné · [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr) · [PDF sur Zenodo](https://doi.org/10.5281/zenodo.24182020)
+  chapters:
+    - index.qmd
+    - auteur.qmd
+    - preambule.qmd
+    - 01-installation.qmd
+    - 02-creer-questionnaire.qmd
+    - 03-code-controle.qmd
+    - 04-saisir-donnees.qmd
+    - 05-tableau-de-bord.qmd
+    - 06-module-classique.qmd
+    - 07-statcalc.qmd
+    - conclusion.qmd
+
+crossref:
+  fig-title: Figure
+  fig-prefix: figure
+  tbl-title: Tableau
+  tbl-prefix: tableau
+  lst-title: Code
+  lst-prefix: code
+  sec-prefix: section
+
+number-sections: true
+number-depth: 3
+toc-depth: 2
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles/custom.scss]
+      dark: [darkly, styles/custom.scss]
+    syntax-definitions:
+      - styles/epiinfo.xml
+    highlight-style: github
+    code-copy: true
+    fig-align: center
+    fig-cap-location: bottom
+    callout-appearance: default
+    reference-location: margin
+    html-math-method: mathjax

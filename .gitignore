@@ -1,30 +1,16 @@
-# Fichiers temporaires de LaTeX
-*.aux
+# Sorties de Quarto
+/_book/
+/.quarto/
+*_files/
 *.log
+*.tex
+*.aux
 *.toc
-*.lof
-*.lot
-*.lol
-*.out
-*.maf
-*.mtc*
-*.idx
-*.ind
-*.ilg
-*.bbl
-*.blg
-*.fls
-*.fdb_latexmk
-*.synctex.gz
-*.synctex(busy)
-*.xdv
-
-# PDF compilé : publié dans les Releases GitHub, pas dans le dépôt
-*.pdf
+/*.pdf
 
 # Fichiers d'éditeurs et de système
-img/.metadata/
-.metadata/
+.Rproj.user/
+.vscode/
 *.bak
 *~
 .DS_Store

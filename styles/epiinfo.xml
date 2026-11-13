@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language>
+<!-- Coloration syntaxique du code de contrôle et des programmes du module Classique d'Epi Info 7 -->
+<language name="epiinfo" alternativeNames="EpiInfo;epi" section="Scripts" version="1" kateversion="5.0"
+          extensions="*.pgm7;*.chk" casesensitive="0" author="OUEDRAOGO Ahmed Dieudonné" license="CC BY-NC-SA 4.0">
+  <highlighting>
+    <list name="blocks">
+      <item>Field</item><item>End-Field</item>
+      <item>Page</item><item>End-Page</item>
+      <item>View</item><item>End-View</item>
+      <item>Before</item><item>End-Before</item>
+      <item>After</item><item>End-After</item>
+      <item>Click</item><item>End-Click</item>
+      <item>Record</item><item>End-Record</item>
+    </list>
+    <list name="keywords">
+      <item>IF</item><item>THEN</item><item>ELSE</item><item>END</item><item>END-IF</item>
+      <item>AND</item><item>OR</item><item>NOT</item><item>TO</item>
+      <item>DEFINE</item><item>ASSIGN</item><item>DIALOG</item><item>CLEAR</item><item>GOTO</item>
+      <item>HIDE</item><item>UNHIDE</item><item>ENABLE</item><item>DISABLE</item>
+      <item>READ</item><item>LIST</item><item>DISPLAY</item><item>DBVARIABLES</item>
+      <item>FREQ</item><item>MEANS</item><item>TABLES</item><item>SELECT</item><item>CANCEL</item>
+      <item>SORT</item><item>RECODE</item><item>ROUTEOUT</item><item>CLOSEOUT</item>
+      <item>STRATAVAR</item><item>TITLETEXT</item><item>REPLACE</item><item>DESCENDING</item>
+      <item>LOGISTIC</item><item>REGRESS</item><item>GRAPH</item><item>WRITE</item><item>MERGE</item>
+      <item>NUMERIC</item><item>YN</item><item>TEXTINPUT</item><item>DATEFORMAT</item>
+      <item>LOVALUE</item><item>HIVALUE</item>
+    </list>
+    <list name="functions">
+      <item>YEARS</item><item>MONTHS</item><item>DAYS</item><item>SYSTEMDATE</item>
+      <item>ROUND</item><item>TRUNC</item><item>ABS</item><item>EXP</item><item>LN</item><item>LOG</item>
+      <item>SUBSTRING</item><item>TXTTONUM</item><item>NUMTODATE</item><item>UPPERCASE</item>
+    </list>
+    <contexts>
+      <context name="Normal" attribute="Normal Text" lineEndContext="#stay">
+        <Detect2Chars attribute="Comment" context="Comment" char="/" char1="/"/>
+        <Detect2Chars attribute="Comment" context="BlockComment" char="/" char1="*" beginRegion="comment"/>
+        <DetectChar attribute="String" context="String" char="&quot;"/>
+        <RegExpr attribute="Constant" context="#stay" String="\((\+|-|\.)\)"/>
+        <keyword attribute="Block" context="#stay" String="blocks"/>
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <keyword attribute="Function" context="#stay" String="functions"/>
+        <Float attribute="Number" context="#stay"/>
+        <Int attribute="Number" context="#stay"/>
+        <AnyChar attribute="Operator" context="#stay" String="=&lt;&gt;+-*/^"/>
+      </context>
+      <context name="String" attribute="String" lineEndContext="#pop">
+        <DetectChar attribute="String" context="#pop" char="&quot;"/>
+      </context>
+      <context name="Comment" attribute="Comment" lineEndContext="#pop"/>
+      <context name="BlockComment" attribute="Comment" lineEndContext="#stay">
+        <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="comment"/>
+      </context>
+    </contexts>
+    <itemDatas>
+      <itemData name="Normal Text" defStyleNum="dsNormal"/>
+      <itemData name="Block" defStyleNum="dsControlFlow"/>
+      <itemData name="Keyword" defStyleNum="dsKeyword"/>
+      <itemData name="Function" defStyleNum="dsFunction"/>
+      <itemData name="Constant" defStyleNum="dsConstant"/>
+      <itemData name="Number" defStyleNum="dsDecVal"/>
+      <itemData name="Operator" defStyleNum="dsOperator"/>
+      <itemData name="String" defStyleNum="dsString"/>
+      <itemData name="Comment" defStyleNum="dsComment"/>
+    </itemDatas>
+  </highlighting>
+  <general>
+    <comments>
+      <comment name="singleLine" start="//"/>
+      <comment name="multiLine" start="/*" end="*/" region="comment"/>
+    </comments>
+    <keywords casesensitive="0" weakDeliminator="-"/>
+  </general>
+</language>

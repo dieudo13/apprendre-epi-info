@@ -1,0 +1,36 @@
+/*-- scss:defaults --*/
+// Couleurs du livre (reprises de la version LaTeX)
+$epi-bleu: #1D60AC;   // EPIB
+$epi-vert: #00A6A6;   // EPIV
+
+$primary: $epi-bleu;
+$link-color: $epi-bleu;
+$font-family-sans-serif: "Source Sans 3", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace: "Inconsolata", "Fira Code", Consolas, monospace;
+
+/*-- scss:rules --*/
+h1.title, .chapter-title, h1, h2 {
+  color: $epi-bleu;
+}
+
+.chapter-number {
+  color: $epi-vert;
+}
+
+// Captures d'écran : hauteur limitée et léger cadre
+.quarto-figure img {
+  max-height: 70vh;
+  object-fit: contain;
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 4px;
+}
+
+// Blocs de code Epi Info (codes numérotés)
+div[id^="lst-"] pre {
+  border-left: 3px solid $epi-bleu;
+}
+
+.smallcaps {
+  font-variant: small-caps;
+  letter-spacing: .02em;
+}

@@ -1,0 +1,41 @@
+# Bienvenue {.unnumbered}
+
+Ce site est la version en ligne du livre **Apprendre Epi Info 7 : guide pratique d'analyse épidémiologique et statistique**. Il accompagne pas à pas la conduite d'une enquête avec Epi Info 7, le logiciel gratuit des *Centers for Disease Control and Prevention* (CDC) : conception du questionnaire, code de contrôle, saisie des données, puis analyse statistique avec les modules **[tableau de bord visuel]{.smallcaps}**, **[classique]{.smallcaps}** et **[statcalc]{.smallcaps}**.
+
+Le livre s'adresse aux étudiants en fin de cycle qui doivent analyser les données de leur mémoire ou de leur thèse, et à tous les professionnels de santé qui débutent dans l'analyse de données.
+
+## Télécharger le livre {.unnumbered}
+
+La version PDF du livre est archivée sur Zenodo : <https://doi.org/10.5281/zenodo.24182020>. Le lien est aussi accessible à tout moment par l'icône PDF de la barre latérale et en pied de page.
+
+## Citer ce livre {.unnumbered}
+
+> OUEDRAOGO AD. *Apprendre Epi Info 7 : guide pratique d'analyse épidémiologique et statistique*. Zenodo; 2026. doi:[10.5281/zenodo.24182020](https://doi.org/10.5281/zenodo.24182020)
+
+``` bibtex
+@book{ouedraogo2026epiinfo,
+  author    = {OUEDRAOGO, Ahmed Dieudonné},
+  title     = {Apprendre Epi Info 7 : guide pratique d'analyse épidémiologique et statistique},
+  publisher = {Zenodo},
+  year      = {2026},
+  doi       = {10.5281/zenodo.24182020},
+  language  = {french}
+}
+```
+
+## Conventions typographiques {.unnumbered}
+
+| Élément | Exemple |
+|:--------|:--------|
+| Module d'Epi Info | **[tableau de bord visuel]{.smallcaps}** |
+| Menu, bouton, fenêtre ou valeur à choisir | **Nouveau projet** |
+| Variable, fichier ou chemin | `date_naissance` |
+| Commande ou code d'Epi Info | **`ASSIGN`** |
+| Libellé d'une question ou texte à saisir | « Êtes-vous vacciné(e) ? » |
+| Notion définie dans le texte | *odds ratio* |
+
+## Licence {.unnumbered}
+
+© 2026 OUEDRAOGO Ahmed Dieudonné. Cet ouvrage est mis à disposition selon les termes de la licence [Creative Commons Attribution -- Pas d'utilisation commerciale -- Partage dans les mêmes conditions 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr).
+
+Ce guide est un travail indépendant. Il n'est ni publié ni approuvé par les CDC. Epi Info est une marque des CDC.
