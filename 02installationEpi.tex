@@ -1,0 +1,50 @@
+\chapter{Installation et configuration d'Epi Info 7}
+\label{installationConfig}
+
+Dans ce chapitre, nous allons télécharger le logiciel Epi Info sur le site internet du CDC, à l'adresse {\footnotesize \url{https://www.cdc.gov/epiinfo/support/downloads.html}}, puis l'installer sur notre ordinateur et l'afficher en français.
+
+\section{Configuration requise}
+
+Epi Info 7 fonctionne sous Microsoft Windows 7 ou une version plus récente et nécessite le composant Microsoft .NET Framework 4.8, déjà présent sur les versions récentes de Windows. La version utilisée dans ce livre est la version~7.2 ; les captures d'écran ont été réalisées avec la version~7.2.5.
+
+\begin{mybox}[colbacktitle=NOTE]{\faInfoCircle{} À RETENIR}
+Le CDC a annoncé l'arrêt du développement et de l'assistance technique d'Epi Info à partir du 1\ier{} septembre 2025. La dernière version reste téléchargeable et utilisable gratuitement, mais elle ne recevra plus de mises à jour.
+\end{mybox}
+
+\section{Télécharger et installer Epi Info 7}
+
+Le logiciel est distribué sous la forme d'un fichier compressé (\var{.zip}) qui ne demande pas d'installation classique. Pour l'installer :
+
+\begin{enumerate}
+	\item Ouvrir la page de téléchargement indiquée plus haut et cliquer sur le lien de téléchargement du fichier ZIP d'Epi Info 7 ;
+	\item Une fois le téléchargement terminé, faire un clic droit sur le fichier compressé puis choisir \kw{Extraire tout\ldots} ;
+	\item Choisir un emplacement facile à retrouver, par exemple \var{C:\textbackslash Epi Info 7}, puis valider. Évitez de laisser le dossier dans \var{Téléchargements} ;
+	\item Ouvrir le dossier extrait et double-cliquer sur le fichier \var{Launch Epi Info 7.exe} pour lancer le logiciel ;
+	\item Pour retrouver facilement le logiciel, faire un clic droit sur ce fichier puis \kw{Envoyer vers > Bureau (créer un raccourci)}.
+\end{enumerate}
+
+\begin{mybox}[colbacktitle=TIP]{\faLightbulb{} CONSEIL}
+Au premier lancement, Windows peut afficher un avertissement de sécurité. Après avoir vérifié que le fichier provient bien du site du CDC, cliquez sur \kw{Informations complémentaires} puis sur \kw{Exécuter quand même}.
+\end{mybox}
+
+\section{Mettre Epi Info en français}
+
+Lorsque nous lançons Epi Info pour la première fois, il s'affiche comme sur la \autoref{fig:epiintro}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.85\linewidth]{img/config/epiintro}
+	\caption{Fenêtre d'accueil d'Epi Info 7}
+	\label{fig:epiintro}
+\end{figure}
+
+Nous remarquons que le logiciel s'affiche en anglais. Pour le passer en français :
+
+\begin{enumerate}
+	\item Cliquer en bas à droite de la fenêtre d'accueil sur \kw{\textsc{language}} ;
+	\item Dans la fenêtre qui s'ouvre, choisir \kw{French (France)} ;
+	\item Cliquer sur \kw{Apply} pour appliquer le changement ;
+	\item Fermer puis relancer le logiciel.
+\end{enumerate}
+
+Epi Info s'affiche désormais en français. Dans la suite de ce livre, les noms des menus et des boutons sont donc donnés en français. Certains éléments restent toutefois en anglais même après ce changement ; nous les signalerons au fur et à mesure.

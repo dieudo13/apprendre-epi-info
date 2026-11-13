@@ -1,0 +1,120 @@
+\chapter{Module StatCalc}
+\label{moduleStatcalc}
+%\minitoc
+
+\module{statcalc} est le module de calculatrices statistiques d'Epi Info 7. Contrairement aux modules \module{tableau de bord visuel} et \module{classique}, il ne travaille pas sur une base de données : on y saisit directement des chiffres. Il sert surtout à deux choses :
+\begin{itemize}
+	\item calculer la \terme{taille de l'échantillon} nécessaire avant une enquête, une étape obligatoire de tout protocole de recherche ;
+	\item analyser rapidement un tableau dont on connaît déjà les effectifs, par exemple un tableau publié dans un article ou un rapport.
+\end{itemize}
+
+Dans le cadre d'un mémoire ou d'une thèse, le calcul de la taille de l'échantillon se fait au moment de la rédaction du protocole, avec votre directeur ou directrice de mémoire ou de thèse, et doit être justifié dans la partie méthodologie.
+
+\section{Ouvrir le module StatCalc}
+
+Pour ouvrir le module, cliquer sur \module{statcalc} dans la fenêtre d'accueil d'Epi Info (\autoref{fig:tableaudebord}, page~\pageref{fig:tableaudebord}). Une fenêtre s'ouvre avec la liste des calculatrices disponibles, réparties en deux groupes\footnote{Les libellés indiqués ici peuvent varier légèrement selon la version d'Epi Info et sa traduction française.} :
+
+\begin{itemize}
+	\item \kw{Taille de l'échantillon et puissance} :
+	\begin{itemize}
+		\item \kw{Enquête de population}, pour une enquête descriptive (estimer une prévalence, une proportion) ;
+		\item \kw{Cohorte ou transversale}, pour comparer des exposés et des non-exposés ;
+		\item \kw{Cas-témoins non appariés}, pour comparer des malades (cas) et des non-malades (témoins) ;
+	\end{itemize}
+	\item les calculatrices d'analyse :
+	\begin{itemize}
+		\item \kw{Tables (2 x 2, 2 x n)}, pour analyser un tableau croisé ;
+		\item \kw{Chi carré pour tendance}, pour rechercher une relation dose-effet ;
+		\item \kw{Poisson} et \kw{Binomial}, pour comparer un nombre ou une proportion observés à une valeur attendue.
+	\end{itemize}
+\end{itemize}
+
+Chaque calculatrice affiche ses résultats au fur et à mesure de la saisie : il n'y a pas de bouton de validation. Modifiez un paramètre et observez immédiatement son effet sur le résultat.
+
+\begin{mybox}[colbacktitle=NOTE]{\faInfoCircle{} À RETENIR}
+Le calcul de la taille de l'échantillon repose sur des hypothèses (prévalence attendue, précision souhaitée, risque relatif attendu\ldots). Ces hypothèses doivent être tirées de la littérature ou d'une étude préliminaire, et citées dans votre protocole.
+\end{mybox}
+
+\section[Taille de l'échantillon pour une enquête de population][Échantillon : enquête de population]{Taille de l'échantillon pour une enquête de population}
+\label{statcalcPopulation}
+
+C'est le calcul le plus courant pour une enquête descriptive, par exemple pour estimer la proportion de personnes vaccinées contre la Covid-19 dans une ville. Cliquer sur \kw{Enquête de population}, puis renseigner les paramètres suivants :
+
+\begin{enumerate}
+	\item \kw{Taille de la population} : le nombre de personnes de la population étudiée. Si elle est très grande ou inconnue, laisser la valeur par défaut, 999\,999 ;
+	\item \kw{Fréquence attendue} : la proportion que l'on s'attend à trouver, en pourcentage, tirée de la littérature. Si elle est inconnue, saisir 50~\%, la valeur qui donne l'échantillon le plus grand ;
+	\item \kw{Marge d'erreur acceptable} : la précision souhaitée, c'est-à-dire la demi-largeur de l'intervalle de confiance. On choisit le plus souvent 5~\% ;
+	\item \kw{Effet de plan} : laisser 1 pour un sondage aléatoire simple. Pour un sondage en grappes, on utilise généralement 2 ;
+	\item \kw{Grappes} : le nombre de grappes, 1 pour un sondage aléatoire simple.
+\end{enumerate}
+
+Epi Info affiche alors la taille de l'échantillon pour plusieurs niveaux de confiance (80~\%, 90~\%, 95~\%, 99~\%, etc.). On retient en général la ligne correspondant à 95~\%. Le calcul repose sur la formule suivante :
+\[
+n = \frac{z^2 \times p\,(1-p)}{d^2}
+\]
+où $z$ vaut 1,96 pour un niveau de confiance de 95~\%, $p$ est la fréquence attendue et $d$ la marge d'erreur. Epi Info y ajoute une correction lorsque la population est petite, et multiplie le résultat par l'effet de plan.
+
+Par exemple, avec une population de 999\,999 personnes, une fréquence attendue de 50~\%, une marge d'erreur de 5~\% et un effet de plan de 1, on obtient pour un niveau de confiance de 95~\% :
+\[
+n = \frac{1{,}96^2 \times 0{,}5 \times 0{,}5}{0{,}05^2} \approx 384 \text{ personnes.}
+\]
+
+\begin{mybox}[colbacktitle=TIP]{\faLightbulb{} CONSEIL}
+Prévoyez toujours une marge pour les refus et les questionnaires inexploitables. Avec un taux de non-réponse attendu de 10~\%, il faut enquêter $384/(1-0{,}10) \approx 427$ personnes. Si l'enquête se fait en grappes avec un effet de plan de 2, l'échantillon double : $384 \times 2 = 768$ personnes avant la majoration pour non-réponse.
+\end{mybox}
+
+\section[Taille de l'échantillon pour une étude de cohorte ou transversale][Échantillon : cohorte ou transversale]{Taille de l'échantillon pour une étude de cohorte ou transversale}
+
+Lorsque l'on veut comparer la fréquence d'une maladie entre des exposés et des non-exposés, il faut un échantillon suffisant pour mettre en évidence une différence si elle existe. Cliquer sur \kw{Cohorte ou transversale}, puis renseigner :
+
+\begin{enumerate}
+	\item \kw{Niveau de confiance bilatéral} : en général 95~\%, ce qui correspond à un risque $\alpha$ de 5~\% ;
+	\item \kw{Puissance} : la probabilité de mettre en évidence la différence si elle existe, en général 80~\% (risque $\beta$ de 20~\%) ;
+	\item \kw{Ratio (non exposés : exposés)} : le nombre de non-exposés pour un exposé, en général 1 ;
+	\item \kw{Pourcentage de non-exposés avec le résultat} : la fréquence de la maladie attendue chez les non-exposés ;
+	\item enfin, \kw{Pourcentage d'exposés avec le résultat}, ou de façon équivalente le \kw{Risque relatif} ou l'\kw{Odds ratio} que l'on souhaite pouvoir mettre en évidence. Ces trois cases sont liées : en remplir une met à jour les deux autres.
+\end{enumerate}
+
+Epi Info affiche le nombre d'exposés, de non-exposés et le total selon trois méthodes : \kw{Kelsey}, \kw{Fleiss} et \kw{Fleiss avec CC} (avec correction de continuité). Les résultats sont proches ; la méthode de Fleiss avec correction de continuité est la plus prudente, car elle donne l'échantillon le plus grand.
+
+Par exemple, avec un niveau de confiance de 95~\%, une puissance de 80~\%, un ratio de 1, une fréquence de la maladie de 20~\% chez les non-exposés et de 40~\% chez les exposés (soit un risque relatif de 2), il faut environ 82 exposés et 82 non-exposés selon la méthode de Fleiss, un peu plus avec la correction de continuité.
+
+\section[Taille de l'échantillon pour une étude cas-témoins][Échantillon : étude cas-témoins]{Taille de l'échantillon pour une étude cas-témoins}
+
+Dans une étude cas-témoins, on compare l'exposition des malades (cas) à celle de non-malades (témoins). Cliquer sur \kw{Cas-témoins non appariés}. Les paramètres sont les mêmes que pour une cohorte, à deux différences près :
+\begin{itemize}
+	\item le ratio est le nombre de \kw{témoins pour un cas}. Prendre deux, trois ou quatre témoins par cas augmente la puissance lorsque les cas sont rares ; au-delà de quatre, le gain devient faible ;
+	\item on renseigne le \kw{pourcentage de témoins exposés}, puis le pourcentage de cas exposés ou l'\kw{odds ratio} que l'on souhaite pouvoir mettre en évidence.
+\end{itemize}
+
+Epi Info affiche le nombre de cas, de témoins et le total selon les mêmes trois méthodes.
+
+\begin{mybox}[colbacktitle=CAUTION]{\faFire{} AVERTISSEMENT}
+Plus la différence que l'on cherche à mettre en évidence est petite (un risque relatif ou un odds ratio proche de 1), plus l'échantillon nécessaire est grand. Choisissez un effet attendu réaliste, tiré de la littérature, et non un effet arrangé pour obtenir un petit échantillon.
+\end{mybox}
+
+\section{Analyser un tableau 2x2}
+\label{statcalcTables}
+
+La calculatrice \kw{Tables (2 x 2, 2 x n)} réalise les mêmes calculs que le gadget Table MxN / 2x2 du Tableau de bord ou la commande \commande{TABLES} du module Classique, mais à partir des seuls effectifs. Pour l'utiliser, cliquer sur \kw{Tables (2 x 2, 2 x n)} et saisir les quatre effectifs $a$, $b$, $c$ et $d$ du tableau (\autoref{tab:2x2}, page~\pageref{tab:2x2}) : les exposés malades et non malades sur la première ligne, les non-exposés malades et non malades sur la deuxième.
+
+Saisissons les effectifs de l'exemple de la crème glacée (section~\ref{tableau2x2}) : 69 et 5 sur la première ligne, 207 et 78 sur la deuxième. StatCalc affiche aussitôt l'odds ratio (5,20), le risque relatif (1,28), leurs intervalles de confiance à 95~\%, les tests du chi carré et le test exact de Fisher : ce sont les résultats obtenus avec le Tableau de bord.
+
+\begin{mybox}[colbacktitle=TIP]{\faLightbulb{} CONSEIL}
+Cette calculatrice est très pratique pour vérifier un résultat publié dans un article, ou pour analyser un tableau quand on n'a pas accès à la base de données. StatCalc permet aussi de saisir plusieurs tableaux 2x2 (une strate par tableau) pour obtenir un odds ratio ajusté de Mantel-Haenszel.
+\end{mybox}
+
+\section{Les autres calculatrices}
+
+\paragraph{Chi carré pour tendance} Cette calculatrice recherche une relation dose-effet : le risque de maladie augmente-t-il régulièrement avec le niveau d'exposition (par exemple avec le nombre de cigarettes fumées par jour) ? Pour chaque niveau d'exposition, on saisit un score, le nombre de cas et le nombre de témoins. Epi Info calcule un odds ratio pour chaque niveau, par rapport au premier, et le chi carré de tendance avec sa valeur \textit{p}.
+
+\paragraph{Poisson} Cette calculatrice compare un nombre d'événements observé à un nombre attendu, lorsque l'événement est rare. Par exemple : on observe 12 cas d'une maladie dans un district où l'on en attend 5 d'après les années précédentes. Cet excès peut-il être dû au hasard ? Epi Info donne la probabilité d'observer au moins 12 cas si le nombre attendu est 5.
+
+\paragraph{Binomial} Cette calculatrice compare une proportion observée à une proportion attendue. Par exemple : sur 50 enfants vaccinés, 8 ont présenté un effet indésirable, alors que la fréquence attendue est de 5~\%. Epi Info donne la probabilité d'observer un tel résultat si la fréquence réelle est bien de 5~\%.
+
+\begin{mybox}[colbacktitle=NOTE]{\faInfoCircle{} À RETENIR}
+\begin{itemize}[label=\ding{97}, font=\color{NOTE}]
+	\item Avant l'enquête : \kw{Enquête de population} pour une étude descriptive, \kw{Cohorte ou transversale} ou \kw{Cas-témoins non appariés} pour une étude analytique ;
+	\item Après l'enquête, ou à partir d'un tableau publié : \kw{Tables (2 x 2, 2 x n)}, \kw{Chi carré pour tendance}, \kw{Poisson} et \kw{Binomial}.
+\end{itemize}
+\end{mybox}

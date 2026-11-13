@@ -1,0 +1,394 @@
+\chapter{Module Classique}
+\label{moduleClassic}
+%\minitoc
+
+Pour l'analyse des données, Epi Info 7 propose deux modules : \module{tableau de bord visuel}, étudié au chapitre précédent, et \module{classique}. Dans ce chapitre, nous apprendrons à réaliser des analyses statistiques avec le module \module{classique}, qui fonctionne à l'aide de commandes.
+
+\section{Découvrir le module Classique}
+
+Pour ouvrir le module, cliquer sur \module{classique} dans la fenêtre d'accueil d'Epi Info (\autoref{fig:ouvrirmoduleclassique}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{img/Classique/ouvrirModuleClassique}
+	\caption{Ouvrir le module Classique}
+	\label{fig:ouvrirmoduleclassique}
+\end{figure}
+
+L'interface du module comporte quatre parties (\autoref{fig:interfaceclassic}) : à gauche, la liste des commandes, regroupées par sections ; l'éditeur de programme, où s'écrivent les commandes ; la fenêtre des résultats ; et, tout en bas, la zone d'affichage des messages d'erreur.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{img/Classique/interfaceClassic}
+	\caption{Interface du module d'analyse Classique}
+	\label{fig:interfaceclassic}
+\end{figure}
+
+L'analyse repose entièrement sur les commandes. Elles sont regroupées en sections :
+\begin{itemize}
+	\item la section \kw{Données} regroupe les commandes qui agissent sur les données : lecture, import et export de fichiers, fusion de bases issues d'un même questionnaire, etc. ;
+	\item la section \kw{Variables} permet de créer (\kw{Définir}), de calculer (\kw{Assigner}), de recoder (\kw{Transcoder}) et d'afficher (\kw{Affichage}) des variables ;
+	\item la section \kw{Sélectionner/Si} contient les commandes qui filtrent les données ;
+	\item la section \kw{Statistique} permet de réaliser des statistiques simples : statistiques descriptives et tests statistiques ;
+	\item la section \kw{Statistiques Avancées} permet de réaliser des analyses plus complexes : régression linéaire et logistique, analyse de survie, modèle de Cox, etc. ;
+	\item la section \kw{Sortie} et les suivantes servent à paramétrer la sortie des résultats et à définir ses propres commandes.
+\end{itemize}
+
+Lorsque l'on clique sur une commande, une fenêtre s'ouvre pour la paramétrer. Après validation, Epi Info écrit la commande correspondante dans l'éditeur de programme et l'exécute. Le module \module{classique} permet de réaliser toutes les analyses du module \module{tableau de bord visuel}, et bien d'autres.
+
+\section{Importer des données avec la commande Lire}
+
+Pour faciliter l'apprentissage, nous travaillerons avec la même base que dans le module \module{tableau de bord visuel} : la base \var{EColi}, livrée avec Epi Info. Nous pourrons ainsi comparer les résultats des deux modules.
+
+Pour importer un fichier de données dans le module \module{classique} (\autoref{fig:commanderead}), nous utilisons la commande \module{Lire} (\commande{READ} en anglais) :
+
+\begin{itemize}
+	\item Cliquer sur \kw{Lire} dans la section \kw{Données} de la liste des commandes (barre latérale gauche) ;
+	\item Cliquer sur la flèche déroulante \kw{Type de base de données} et choisir \kw{Epi Info 7 Project} ;
+	\item Dans \kw{Source de données}, cliquer sur \kw{Parcourir}. Une fenêtre s'ouvre : aller dans le disque local C, puis \var{Utilisateurs}, puis le dossier de votre nom d'utilisateur, puis le dossier \var{Epi Info 7}. Ouvrir ensuite le dossier \var{Projects}, puis le dossier \var{EColi}, et enfin le fichier \var{EColi.prj}. Le chemin d'accès du fichier est donc de la forme \var{C:\textbackslash Users\textbackslash Dieudo\textbackslash Epi Info 7\textbackslash Projects\textbackslash EColi\textbackslash EColi.prj}, où \var{Dieudo} est le nom d'utilisateur ;
+	\item Les deux formulaires de la base apparaissent ; sélectionner le premier, \var{FoodHistory} ;
+	\item Cliquer sur \kw{OK}.
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{img/Classique/commandeRead}
+	\caption{Utilisation de la commande Lire (Read) pour importer un fichier de données}
+	\label{fig:commanderead}
+\end{figure}
+
+À l'issue de cette étape, nous obtenons la fenêtre de la \autoref{fig:fenetreapresimport}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{img/Classique/fenetreApresImport}
+	\caption{Fenêtre du module Classique après l'import des données}
+	\label{fig:fenetreapresimport}
+\end{figure}
+
+\begin{mybox}[colbacktitle=NOTE]{\faInfoCircle{} À RETENIR}
+	Pour ouvrir un fichier Excel ou CSV, suivez la même procédure en choisissant Microsoft Excel ou \kw{CSV file} dans \kw{Type de base de données}.
+\end{mybox}
+
+Remarquez que la commande qui a servi à importer les données est écrite dans l'éditeur de programme (\autoref{lst:read}).
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Commande d'import de la base EColi}, label=lst:read]
+READ {C:\Users\Dieudo\Epi Info 7\Projects\EColi\EColi.prj}:FoodHistory
+	\end{lstlisting}
+\end{tcolorbox}
+
+\section{Enregistrer et rouvrir un programme}
+
+L'un des grands avantages du module \module{classique} est qu'il permet d'enregistrer les commandes de l'analyse dans un programme. On peut ainsi refaire toute l'analyse en un clic, ce qui facilite la reproductibilité, comme avec des logiciels de renom tels que \textsc{r}, \textsc{python} ou \textsc{stata}.
+
+Pour enregistrer le programme (\autoref{fig:enregistrerprogramme}, page~\pageref{fig:enregistrerprogramme}) :
+
+\begin{itemize}
+	\item Cliquer sur \kw{Enregistrer Pgm}. Une fenêtre s'ouvre ;
+	\item Dans la fenêtre \kw{Save Program}, au niveau de \kw{Fichier Projet}, cliquer sur le bouton à trois points situé à droite pour choisir le projet ;
+	\item Dans \kw{Programme}, écrire le nom du programme, ici \var{prg\_ECOLI} ;
+	\item Ajouter le nom de l'auteur du programme (votre nom) ;
+	\item Ajouter éventuellement un commentaire dans \kw{Commentaires}, par exemple \question{Script Epi Info d'analyse de la base de données ECOLI} ;
+	\item Valider par \kw{OK}.
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{img/Classique/enregistrerProgramme}
+	\caption{Enregistrer un programme}
+	\label{fig:enregistrerprogramme}
+\end{figure}
+
+Au fur et à mesure de l'analyse, cliquez régulièrement sur \kw{Enregistrer Pgm} pour sauvegarder le programme.
+
+Pour reprendre l'analyse après avoir quitté Epi Info, cliquer sur \kw{Ouvrir Pgm}, choisir le projet puis le programme contenant les commandes. Il faut ensuite exécuter les commandes souhaitées, en commençant obligatoirement par la commande \commande{READ} qui importe les données. Pour cela, sélectionnez les lignes voulues dans l'éditeur de programme puis cliquez sur \kw{Exécuter des Commandes}, dans la barre d'outils de l'éditeur.
+
+\begin{mybox}[colbacktitle=TIP]{\faLightbulb{} CONSEIL}
+Comme dans le code de contrôle, une ligne qui commence par \commande{//} est un commentaire : elle n'est pas exécutée. Commentez votre programme pour vous y retrouver plus tard.
+\end{mybox}
+
+\section{Explorer les données}
+
+Avant de commencer l'analyse, il est utile de vérifier le type des variables. Pour cela, cliquer sur la commande \kw{Affichage} de la section \kw{Variables}, puis choisir d'afficher les variables de la base. La commande \commande{DISPLAY DBVARIABLES} s'écrit dans l'éditeur de programme. Son exécution affiche le dictionnaire des données sous forme de tableau : pour chaque variable, son nom, la question correspondante, son type, etc. C'est une vue d'ensemble de la base.
+
+La commande \kw{Liste} de la section \kw{Statistique} affiche quant à elle les données brutes, enregistrement par enregistrement. Elle permet de voir la structure des données. Le symbole \commande{*} désigne toutes les variables ; on peut aussi n'en lister que quelques-unes.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Explorer les données}, label=lst:explorer]
+// Dictionnaire des données de la base
+DISPLAY DBVARIABLES
+// Liste de toutes les variables
+LIST *
+// Liste de quelques variables seulement
+LIST Age Sex ILL
+	\end{lstlisting}
+\end{tcolorbox}
+
+\section{Statistique descriptive}
+
+\subsection{Décrire une variable qualitative}
+
+Pour décrire une variable qualitative, nous utilisons le \og tableau de fréquences \fg{}, qui présente l'effectif et le pourcentage de chaque modalité. Pour l'obtenir, cliquer sur \kw{Fréquences} dans la section \kw{Statistiques}, sélectionner la variable dans la liste déroulante \kw{Fréquence de}, puis cliquer sur \kw{OK}.
+
+Pour la variable \var{ILL}, nous retrouvons les résultats du chapitre précédent : 276 malades (76,88~\%) et 83 non-malades (23,12~\%). Le module \module{classique} ajoute l'intervalle de confiance à 95~\% de chaque pourcentage.
+
+Pour stratifier la fréquence selon une autre variable, comme le sexe, il suffit de choisir cette variable dans la liste \kw{Stratifier par} de la même fenêtre. La commande s'écrit alors avec l'option \commande{STRATAVAR} (\autoref{lst:freq}).
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Tableaux de fréquences}, label=lst:freq]
+// Fréquence de la variable ILL
+FREQ ILL
+// Fréquence de ILL stratifiée selon le sexe
+FREQ ILL STRATAVAR=Sex
+	\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Décrire une variable quantitative}
+
+Pour décrire une variable quantitative, nous utilisons la commande \kw{Moyennes} de la section \kw{Statistique}. Sélectionner la variable dans la liste \kw{Moyennes de}, ici \var{Age}, puis valider par \kw{OK}. Le résultat donne, comme dans le Tableau de bord, l'effectif, la somme, la moyenne, la variance, l'écart-type, le minimum, les quartiles, la médiane, le maximum et le mode.
+
+Pour comparer l'âge selon le sexe, choisir la variable \var{Sex} dans la liste \kw{Croisé par}. Epi Info affiche alors les statistiques de l'âge pour chaque sexe et réalise un test de comparaison des moyennes : l'analyse de variance (ANOVA) et, en complément, le test non paramétrique de Kruskal-Wallis, à privilégier lorsque la distribution de la variable n'est pas normale.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Paramètres de position et de dispersion}, label=lst:means]
+// Statistiques descriptives de l'âge
+MEANS Age
+// Âge selon le sexe, avec test de comparaison
+MEANS Age Sex
+	\end{lstlisting}
+\end{tcolorbox}
+
+\section{Créer et recoder des variables}
+
+\subsection{Recoder une variable}
+
+Comme dans le Tableau de bord, nous pouvons recoder l'âge en tranches d'âge. Dans le module \module{classique}, cela se fait en deux temps :
+\begin{enumerate}
+	\item Créer la nouvelle variable avec la commande \kw{Définir} (\commande{DEFINE}) de la section \kw{Variables} ;
+	\item Remplir cette variable avec la commande \kw{Transcoder} (\commande{RECODE}), en indiquant la variable source (\var{Age}), la variable de destination (\var{tranche\_age}) et les intervalles de recodage.
+\end{enumerate}
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Recodage de l'âge en tranches d'âge}, label=lst:recode]
+DEFINE tranche_age TEXTINPUT
+RECODE Age TO tranche_age
+	LOVALUE - 14 = "0-14 ans"
+	15 - 29 = "15-29 ans"
+	30 - 44 = "30-44 ans"
+	45 - 59 = "45-59 ans"
+	60 - HIVALUE = "60 ans et plus"
+END
+FREQ tranche_age
+	\end{lstlisting}
+\end{tcolorbox}
+
+\begin{mybox}[colbacktitle=CAUTION]{\faFire{} AVERTISSEMENT}
+Les variables créées avec \commande{DEFINE} n'existent que pendant la session d'analyse : elles ne sont pas enregistrées dans la base. Elles seront recréées chaque fois que vous réexécuterez votre programme ; c'est une raison de plus pour bien l'enregistrer.
+\end{mybox}
+
+\subsection{Calculer une variable avec Assigner}
+
+La commande \kw{Assigner} (\commande{ASSIGN}) de la section \kw{Variables} affecte à une variable le résultat d'un calcul, comme dans le code de contrôle (chapitre~\ref{codeValidation}). Créons par exemple l'âge en mois à partir de l'âge en années :
+\begin{enumerate}
+	\item Créer la variable \var{age\_mois} avec la commande \kw{Définir}, en choisissant le type numérique ;
+	\item Cliquer sur \kw{Assigner}, choisir la variable \var{age\_mois} et écrire l'expression \var{Age * 12} ;
+	\item Valider par \kw{OK}.
+\end{enumerate}
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Calcul d'une nouvelle variable}, label=lst:assignclassic]
+DEFINE age_mois NUMERIC
+ASSIGN age_mois = Age * 12
+MEANS age_mois
+	\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Créer une variable sous condition avec Si}
+
+La commande \kw{Si} (\commande{IF}) de la section \kw{Sélectionner/Si} exécute une ou plusieurs commandes lorsqu'une condition est remplie, et éventuellement d'autres commandes dans le cas contraire (\commande{ELSE}). Elle sert souvent à créer une variable Oui/Non à partir d'une autre variable. Créons par exemple la variable \var{majeur}, qui vaut Oui si la personne a 18 ans ou plus :
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Création d'une variable Oui/Non sous condition}, label=lst:ifclassic]
+DEFINE majeur YN
+IF Age >= 18 THEN
+	ASSIGN majeur = (+)
+ELSE
+	ASSIGN majeur = (-)
+END
+FREQ majeur
+	\end{lstlisting}
+\end{tcolorbox}
+
+Le type \commande{YN} crée une variable Oui/Non ; \commande{NUMERIC} crée une variable numérique, \commande{TEXTINPUT} une variable texte et \commande{DATEFORMAT} une variable date.
+
+\begin{mybox}[colbacktitle=TIP]{\faLightbulb{} CONSEIL}
+Prenez l'habitude de vérifier chaque nouvelle variable par une commande \commande{FREQ} ou \commande{MEANS}, comme dans les exemples ci-dessus. Vous repérerez ainsi immédiatement une erreur de recodage ou une condition mal écrite.
+\end{mybox}
+
+\section{Sélectionner une partie des données}
+
+La commande \kw{Sélectionner} (\commande{SELECT}) de la section \kw{Sélectionner/Si} joue le même rôle que les filtres du Tableau de bord : les commandes suivantes ne portent que sur les enregistrements qui remplissent la condition. La commande \kw{Annuler la sélection} (\commande{CANCEL SELECT}) revient à l'ensemble des données.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Sélection des malades âgés de 25 à 35 ans}, label=lst:select]
+SELECT ILL = (+) AND Age >= 25 AND Age <= 35
+LIST Age Sex ILL
+CANCEL SELECT
+	\end{lstlisting}
+\end{tcolorbox}
+
+\begin{mybox}[colbacktitle=CAUTION]{\faFire{} AVERTISSEMENT}
+Une sélection reste active jusqu'à ce qu'elle soit annulée. Vérifiez toujours le nombre d'enregistrements affiché dans les résultats avant d'interpréter une analyse.
+\end{mybox}
+
+\section{Trier les données}
+
+La commande \kw{Trier} (\commande{SORT}) de la section \kw{Sélectionner/Si} classe les enregistrements selon une ou plusieurs variables, par ordre croissant ou décroissant. Le tri est utile avant une commande \commande{LIST}, par exemple pour repérer les valeurs extrêmes. La commande \kw{Annuler le Tri} rétablit l'ordre initial.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Tri des enregistrements selon l'âge}, label=lst:sort]
+SORT Age DESCENDING
+LIST Age Sex ILL
+	\end{lstlisting}
+\end{tcolorbox}
+
+\section{Les valeurs manquantes}
+
+Une valeur manquante correspond à un champ resté vide lors de la saisie. Par défaut, Epi Info exclut les valeurs manquantes des calculs : dans la base EColi, la moyenne des âges porte ainsi sur 356 personnes et non sur 359, car trois âges ne sont pas renseignés. Dans les commandes, une valeur manquante s'écrit \commande{(.)}. On peut ainsi lister les enregistrements dont l'âge est manquant pour les vérifier :
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Repérer les valeurs manquantes}, label=lst:missing]
+SELECT Age = (.)
+LIST *
+CANCEL SELECT
+	\end{lstlisting}
+\end{tcolorbox}
+
+\begin{mybox}[colbacktitle=IMPORTANT]{\faExclamationCircle{} IMPORTANT}
+Comparez toujours l'effectif d'une analyse avec l'effectif total de la base. Un écart important signale des valeurs manquantes, qu'il faut décrire et discuter dans votre mémoire ou votre thèse.
+\end{mybox}
+
+\section{Croiser deux variables : le tableau 2x2}
+
+La commande \kw{Tables} (\commande{TABLES}) de la section \kw{Statistique} croise deux variables qualitatives. Indiquer la variable d'exposition, ici \var{Icecream}, puis la variable de résultat, ici \var{ILL}, et valider par \kw{OK}.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Tableau 2x2 entre la crème glacée et la maladie}, label=lst:tables]
+TABLES Icecream ILL
+	\end{lstlisting}
+\end{tcolorbox}
+
+Pour un tableau 2x2, Epi Info affiche le tableau croisé, l'odds ratio et le risque relatif avec leurs intervalles de confiance à 95~\%, ainsi que les tests du chi carré et le test exact de Fisher. Ils s'interprètent comme au chapitre précédent (section~\ref{tableau2x2}, page~\pageref{tableau2x2}) : une association est statistiquement significative si la valeur \textit{p} est inférieure à 0,05, ou si l'intervalle de confiance ne contient pas 1. On retrouve ici exactement les résultats obtenus avec le Tableau de bord.
+
+\subsection{Tableau stratifié et facteur de confusion}
+
+L'option \commande{STRATAVAR}, que l'on obtient en choisissant une variable dans la liste \kw{Stratifier par}, réalise un tableau 2x2 pour chaque modalité d'une troisième variable. Epi Info calcule alors, en plus des résultats de chaque strate, un odds ratio et un risque relatif \terme{ajustés} sur cette variable, selon la méthode de Mantel-Haenszel.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Tableau 2x2 stratifié selon le sexe}, label=lst:stratavar]
+TABLES Icecream ILL STRATAVAR=Sex
+	\end{lstlisting}
+\end{tcolorbox}
+
+Si la mesure ajustée est proche de la mesure brute, le sexe n'est pas un facteur de confusion de l'association entre la crème glacée et la maladie. Si elle s'en écarte nettement (de plus de 10 à 20~\% selon l'usage courant), le sexe est un facteur de confusion et c'est la mesure ajustée qu'il faut retenir. Si les mesures diffèrent fortement d'une strate à l'autre, on parle de modification d'effet : il faut alors présenter les résultats strate par strate.
+
+\subsection{Tableau MxN}
+
+Lorsque l'une des variables a plus de deux modalités, comme la variable \var{tranche\_age} créée plus haut, la commande \commande{TABLES} produit un tableau MxN. Epi Info calcule alors le test du chi carré, qui indique si la répartition de la maladie diffère selon les tranches d'âge.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Tableau croisé des tranches d'âge et de la maladie}, label=lst:mxn]
+TABLES tranche_age ILL
+	\end{lstlisting}
+\end{tcolorbox}
+
+\begin{mybox}[colbacktitle=CAUTION]{\faFire{} AVERTISSEMENT}
+Le test du chi carré n'est valide que si les effectifs attendus sont suffisamment grands (en règle générale au moins 5 dans chaque case). Lorsque ce n'est pas le cas, Epi Info le signale : regroupez alors des modalités ou utilisez le test exact de Fisher pour un tableau 2x2.
+\end{mybox}
+
+\section{Représentations graphiques}
+
+La commande \kw{Graphique} de la section \kw{Statistique} réalise des graphiques sans quitter le module : diagrammes en barres, en secteurs, histogrammes, courbes, etc. Dans la fenêtre qui s'ouvre, choisir le type de graphique, la variable à représenter et, si besoin, une variable de regroupement, puis valider par \kw{OK}. Le graphique s'affiche dans une fenêtre séparée, d'où l'on peut l'enregistrer comme image. Comme pour le Tableau de bord, nous préférerons souvent réaliser les graphiques définitifs dans un tableur.
+
+\section{Exporter et fusionner des données}
+
+\subsection{Exporter des données}
+
+La commande \kw{Écrire (Exporter)} de la section \kw{Données} enregistre les données, avec les variables créées pendant l'analyse, dans un autre fichier : base Epi Info, classeur Excel ou fichier CSV. Dans la fenêtre qui s'ouvre, choisir les variables à exporter (ou toutes les variables), le format et l'emplacement du fichier, puis valider par \kw{OK}. Si une sélection est active, seuls les enregistrements sélectionnés sont exportés.
+
+\subsection{Fusionner deux bases}
+
+Lorsque plusieurs enquêteurs ont saisi des données sur le même questionnaire, il faut les rassembler dans une seule base. La commande \kw{Fusionner} de la section \kw{Données} réunit la base en cours, ouverte avec \commande{READ}, et une seconde base. Elle peut ajouter les enregistrements de la seconde base à la suite de ceux de la première, ou compléter les enregistrements existants à l'aide d'une variable d'identification commune.
+
+\begin{mybox}[colbacktitle=NOTE]{\faInfoCircle{} À RETENIR}
+La fusion n'est simple que si toutes les bases proviennent du même questionnaire. C'est l'intérêt d'envoyer à tous les enquêteurs le même modèle de projet (section~\ref{modeleProjet}, page~\pageref{modeleProjet}).
+\end{mybox}
+
+\section{Aller plus loin}
+
+\subsection{Enregistrer les résultats}
+
+Par défaut, les résultats s'affichent dans la fenêtre de résultats et sont perdus à la fermeture du module. La commande \kw{Destination} de la section \kw{Sortie} (\commande{ROUTEOUT}) envoie les résultats dans un fichier HTML, que l'on peut ouvrir dans un navigateur, imprimer ou copier dans un traitement de texte. La commande \kw{Fermer} de la même section (\commande{CLOSEOUT}) ferme ce fichier.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Enregistrer les résultats dans un fichier}, label=lst:routeout]
+ROUTEOUT "C:\Users\Dieudo\Documents\resultats_EColi.html" REPLACE
+FREQ ILL
+MEANS Age Sex
+TABLES Icecream ILL
+CLOSEOUT
+	\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Les statistiques avancées}
+
+La section \kw{Statistiques Avancées} donne accès à des modèles plus complexes. Les plus utilisés sont :
+\begin{itemize}
+	\item la \terme{régression logistique} (\kw{Régression logistique}), lorsque la variable à expliquer est binaire (malade/non malade). Elle estime des odds ratios ajustés, c'est-à-dire l'effet propre de chaque facteur en tenant compte des autres, comme nous l'avons évoqué au chapitre précédent ;
+	\item la \terme{régression linéaire} (\kw{Régression linéaire}), lorsque la variable à expliquer est quantitative (le poids, la pression artérielle\ldots) ;
+	\item l'\terme{analyse de survie} (\kw{Survie de Kaplan Meier} et \kw{Modèle de Cox à Risques Proportionnels}), lorsque l'on s'intéresse au délai de survenue d'un événement, comme le décès ou la guérison.
+\end{itemize}
+
+Par exemple, pour mesurer l'effet de la crème glacée sur la maladie en tenant compte de l'âge, cliquer sur \kw{Régression logistique}, choisir \var{ILL} comme variable de résultat, \var{Icecream} et \var{Age} comme variables explicatives, puis valider par \kw{OK}.
+
+\begin{tcolorbox}[drop lifted shadow]
+	\begin{lstlisting}[language=EPIscript, style=mystyle, caption={Régression logistique}, label=lst:logistic]
+LOGISTIC ILL = Icecream Age
+	\end{lstlisting}
+\end{tcolorbox}
+
+Le résultat donne, pour chaque variable explicative, un odds ratio ajusté avec son intervalle de confiance à 95~\% et sa valeur \textit{p}, qui se lisent comme ceux d'un tableau 2x2.
+
+Ces méthodes demandent de solides bases en biostatistique ; prenez le temps de les maîtriser avant de les utiliser pour votre mémoire ou votre thèse.
+
+\section[Récapitulatif des commandes essentielles][Récapitulatif des commandes]{Récapitulatif des commandes essentielles}
+
+Le \autoref{tab:commandesClassique} rassemble les commandes du module \module{classique} vues dans ce chapitre.
+
+\begin{table}[H]
+	\centering
+	\caption{Commandes essentielles du module Classique}
+	\label{tab:commandesClassique}
+	\footnotesize
+	\begin{tabular}{|l|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4.4cm}|}
+		\hline
+		\textbf{Commande} & \textbf{Bouton (section)} & \textbf{Rôle} \\
+		\hline
+		\commande{READ} & Lire (Données) & Ouvrir une base de données \\
+		\commande{DISPLAY DBVARIABLES} & Affichage (Variables) & Afficher le dictionnaire des données \\
+		\commande{LIST} & Liste (Statistique) & Lister les enregistrements \\
+		\commande{FREQ} & Fréquences (Statistique) & Tableau de fréquences \\
+		\commande{MEANS} & Moyennes (Statistique) & Statistiques d'une variable quantitative \\
+		\commande{TABLES} & Tables (Statistique) & Tableau croisé, OR, RR, chi carré \\
+		\commande{DEFINE} & Définir (Variables) & Créer une variable \\
+		\commande{ASSIGN} & Assigner (Variables) & Calculer une variable \\
+		\commande{RECODE} & Transcoder (Variables) & Recoder une variable \\
+		\commande{IF} & Si (Sélectionner/Si) & Exécuter des commandes sous condition \\
+		\commande{SELECT} & Sélectionner (Sélectionner/Si) & Filtrer les enregistrements \\
+		\commande{SORT} & Trier (Sélectionner/Si) & Trier les enregistrements \\
+		\commande{LOGISTIC} & Régression logistique & Odds ratios ajustés \\
+		\commande{ROUTEOUT} & Destination (Sortie) & Enregistrer les résultats \\
+		\hline
+	\end{tabular}
+\end{table}

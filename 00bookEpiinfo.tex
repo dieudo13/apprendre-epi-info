@@ -1,0 +1,258 @@
+%% !TEX program = lualatex
+%% Ce document doit être compilé avec LuaLaTeX (le paquet emoji l'exige).
+%% Penser à compiler deux fois pour mettre à jour les renvois (??).
+\documentclass[12pt,a4paper,openany]{memoir}
+
+\usepackage{iftex}
+\usepackage{fontspec}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{varwidth}
+\tcbuselibrary{skins}
+\usepackage{listings}
+
+%% memoir émule tocloft : \cftdot est disponible sans charger le paquet
+\renewcommand{\cftdot}{}
+
+%%% POLICES %%%-------------------------
+%% Texte : TeX Gyre Pagella (clone libre de Palatino)
+%% Titres sans empattement : TeX Gyre Adventor (clone libre d'Avant Garde)
+%% Mathématiques : TeX Gyre Pagella Math (assortie au texte)
+%% Code : Inconsolata (chasse fixe, plus nette que Latin Modern Mono)
+\usepackage{amsmath}
+\usepackage{unicode-math}% remplace amssymb, à charger après amsmath
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Adventor}
+\setmathfont{TeX Gyre Pagella Math}
+\setmonofont{Inconsolatazi4}[
+	Extension = .otf,
+	UprightFont = *-Regular,
+	BoldFont = *-Bold,
+	ItalicFont = *-Regular,% pas d'italique : inclinaison simulée
+	ItalicFeatures = {FakeSlant=0.18},
+	Scale = MatchLowercase]
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage[french]{babel}
+\frenchbsetup{StandardLists=true}
+\usepackage{awesomebox}% charge aussi fontawesome5 (\faInfoCircle, \faFire...)
+\usepackage{emoji}
+\usepackage{calc}
+\usepackage{soul}
+
+\title{Apprendre Epi Info 7}
+\author{OUEDRAOGO Ahmed Dieudonné}
+
+%%%%%%%%%%%%%%%%%% Couleurs %%%%%%%%%%%%%%%%%%
+\definecolor{NOTE}{rgb}{.1765, .4902, .8235} %% #2D7DD2
+\definecolor{IMPORTANT}{rgb}{.8941,0,.2745} %% #E40046
+\definecolor{WARNING}{rgb}{1,.4667, 0} %% #FF7700
+\definecolor{CAUTION}{rgb}{.502, .1373, .5725} %% #802392
+\definecolor{TIP}{rgb}{.2627, .7255, .1608} %% #43B929
+\definecolor{EPIV}{RGB}{0, 166, 166}
+\definecolor{EPIB}{RGB}{29, 96, 172}
+
+%%%%%%%%%%%%%%%%%% Conventions typographiques %%%%%%%%%%%%%%%%%%
+%% \module{...}   modules d'Epi Info            -> gras + petites capitales
+%% \kw{...}       éléments de l'interface (menus, boutons, fenêtres, champs
+%%                des boîtes de dialogue, gadgets) et valeurs à choisir -> gras
+%% \var{...}      noms de variables, de fichiers et chemins -> machine à écrire
+%% \commande{...}      commandes et code d'Epi Info  -> machine à écrire gras
+%% \question{...} libellé d'une question ou texte à saisir -> « ... »
+%% \terme{...}    notion importante définie dans le texte -> italique
+%% Les noms de logiciels (Excel, R, Stata...) restent en romain.
+\newcommand\module[1]{\textbf{\textsc{#1}}}
+\newcommand\kw[1]{\textbf{#1}}
+\newcommand\var[1]{\texttt{\def\_{\textunderscore\allowbreak}#1}}% coupure permise après _
+\newcommand\commande[1]{\texttt{\textbf{\def\_{\textunderscore\allowbreak}#1}}}
+\newcommand\question[1]{\og #1\fg{}}
+\newcommand\terme[1]{\emph{#1}}
+\newcommand\kwno[1]{\kw{#1}}% ancien nom, conservé par compatibilité
+
+%%%%%%%%%%%%%%%%%% Les boîtes %%%%%%%%%%%%%%%%%%
+\newtcolorbox{mybox}[2][]{enhanced,
+	before skip=2mm,after skip=2mm,
+	colback=black!5,colframe=black!50,boxrule=0.2mm,
+	attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight},
+	varwidth boxed title*=-3cm,
+	boxed title style={frame code={
+			\path[fill=tcbcolback!30!black]
+			([yshift=-1mm,xshift=-1mm]frame.north west)
+			arc[start angle=0,end angle=180,radius=1mm]
+			([yshift=-1mm,xshift=1mm]frame.north east)
+			arc[start angle=180,end angle=0,radius=1mm];
+			\path[left color=tcbcolback!60!black,right color=tcbcolback!60!black,
+			middle color=tcbcolback!80!black]
+			([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+			[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+			-- (frame.south east) -- (frame.south west)
+			-- ([xshift=-1mm,yshift=-1mm]frame.north west)
+			[sharp corners]-- cycle;
+		},interior engine=empty,
+	},
+	fonttitle=\bfseries,
+	title={#2},#1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tcbset{enhanced,colback=EPIB!3!white,
+	boxrule=0.4pt,sharp corners,
+	colframe=EPIB,fonttitle=\bfseries}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%------- Style des chapitres (memoir) ------------%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Le paquet fourier a été retiré : il remplaçait TeX Gyre Pagella par
+%% Utopia et faisait disparaître les apostrophes typographiques (’),
+%% le « œ » et le « ™ » du PDF.
+\makeatletter
+\newsavebox{\feline@chapter}
+\newcommand\feline@chapter@marker[1][4cm]{%
+	\sbox\feline@chapter{%
+		\resizebox{!}{#1}{\fboxsep=1pt%
+			\colorbox{EPIB}{\color{white}\bfseries\sffamily\thechapter}%
+	}}%
+	\rotatebox{90}{%
+		\resizebox{%
+			\heightof{\usebox{\feline@chapter}}+\depthof{\usebox{\feline@chapter}}}%
+		{!}{\scshape\so\@chapapp}}\quad%
+	\raisebox{\depthof{\usebox{\feline@chapter}}}{\usebox{\feline@chapter}}%
+}
+\newcommand\feline@chm[1][4cm]{%
+	\sbox\feline@chapter{\feline@chapter@marker[#1]}%
+	\makebox[0pt][l]{% aka \rlap
+		\makebox[1cm][r]{\usebox\feline@chapter}%
+}}
+\makechapterstyle{daleif1}{
+	\renewcommand\chapnamefont{\normalfont\Large\scshape\raggedleft\so}
+	\renewcommand\chaptitlefont{\normalfont\huge\bfseries\color{EPIB}}
+	\renewcommand\chapternamenum{}
+	\renewcommand\printchaptername{}
+	\renewcommand\printchapternum{\null\hfill\feline@chm[2.5cm]\par}
+	\renewcommand\afterchapternum{\par\vskip\midchapskip}
+	\renewcommand\printchaptertitle[1]{\chaptitlefont\raggedleft ##1\par}
+	%% Remonte l'en-tête des chapitres d'environ 4 cm
+	%% (valeur par défaut de memoir : 50pt). Ajuster ici si besoin.
+	\setlength\beforechapskip{\dimexpr 50pt-4cm\relax}
+}
+\makeatother
+\chapterstyle{daleif1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Mise en page : évite les débordements de ligne (noms de variables en
+%% machine à écrire non coupables) et de l'en-tête
+\setlength{\emergencystretch}{3em}
+%% Zone de texte élargie (environ 16,5 cm) pour des captures plus lisibles
+\setlrmarginsandblock{2.5cm}{2cm}{*}
+\setulmarginsandblock{2.5cm}{2.5cm}{*}
+\setlength{\headheight}{16pt}
+\checkandfixthelayout
+%% Figures fixées par [H] : pas d'étirement vertical quand une image
+%% passe à la page suivante
+\raggedbottom
+
+%% Interligne : environ 1,3 fois la taille du caractère (16 pt en 12 pt)
+\setSpacing{1.1}
+
+%% Listes plus compactes : listes enumitem (itemize, enumerate, description)
+%% et listes de pifont (dingautolist) qui utilisent \list directement
+\setlist{itemsep=2pt, parsep=0pt, topsep=4pt, partopsep=0pt}
+\makeatletter
+\def\@listi{\leftmargin\leftmargini \topsep 4pt \parsep 0pt \itemsep 2pt \partopsep 0pt}
+\let\@listI\@listi
+\def\@listii{\leftmargin\leftmarginii \labelwidth\leftmarginii \advance\labelwidth-\labelsep \topsep 2pt \parsep 0pt \itemsep 1pt}
+\@listi
+\makeatother
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+%	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegray}\itshape,
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	showstringspaces=false,% pas de symbole ␣ dans les chaînes
+	tabsize=4,
+	extendedchars=true,
+	literate={é}{{\'e}}1 {è}{{\`e}}1 {à}{{\`a}}1 {ê}{{\^e}}1 {ô}{{\^o}}1 {ç}{{\c{c}}}1 {É}{{\'E}}1
+}
+\renewcommand{\lstlistingname}{Code}
+\renewcommand{\lstlistlistingname}{Liste des codes}
+
+%%%%%%%%%%%%%%%%%% Langage du code de contrôle et du module Classique %%%%%%%%%%%%%%%%%%%
+\lstdefinelanguage{EPIscript}%
+{%
+	sensitive=false,
+	keywords=[1]{FOR},
+	keywords=[2]{IF, ELSE, THEN, END, FIELD, PAGE, BEFORE, AFTER, CLICK,
+		DISABLE, ENABLE, CLEAR, ASSIGN, DIALOG, GOTO, HIDE, UNHIDE, DEFINE,
+		READ, LIST, DISPLAY, DBVARIABLES, FREQ, MEANS, TABLES, SELECT, CANCEL,
+		SORT, RECODE, ROUTEOUT, CLOSEOUT, STRATAVAR, TITLETEXT, REPLACE,
+		LOVALUE, HIVALUE, OR, AND, NOT, LOGISTIC, REGRESS, NUMERIC, YN,
+		TEXTINPUT, DATEFORMAT, DESCENDING},
+	morecomment=[l]{//},
+	morecomment=[s][\color{gray}]{/*}{*/},
+	morestring=[b]",
+	otherkeywords={=, -, +, >, <}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstset{keywordstyle=[1]{\color{IMPORTANT}}}
+\lstset{keywordstyle=[2]{\color{EPIB}\bfseries}}
+
+%%%%%%%%%%%%%%%%%% Liens hypertexte (chargé en dernier) %%%%%%%%%%%%%%%%%%
+\usepackage[hyperindex=true,colorlinks=true,linkcolor=EPIB,urlcolor=EPIB]{hyperref}
+\hypersetup{pdftitle={Apprendre Epi Info 7 : guide pratique d'analyse épidémiologique et statistique},
+	pdfauthor={OUEDRAOGO Ahmed Dieudonné},
+	pdfsubject={Licence CC BY-NC-SA 4.0 -- DOI 10.5281/zenodo.24182020},
+	pdfkeywords={Epi Info, épidémiologie, biostatistique, analyse de données, santé publique}}
+\providecommand*{\lstlistingautorefname}{code}
+\renewcommand*{\lstlistingautorefname}{code}
+\renewcommand*{\tableautorefname}{tableau}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\frontmatter
+%% Page de garde : image de couverture en pleine page (img/couverture.png, A4, 300 dpi)
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+	\node[inner sep=0pt] at (current page.center)
+	{\includegraphics[width=\paperwidth,height=\paperheight]{img/couverture}};
+\end{tikzpicture}
+\clearpage
+
+\include{00auteur}
+
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\lstlistoflistings
+\clearpage
+
+\include{01preambule}
+
+\mainmatter
+\include{02installationEpi}
+\include{03creerQuestionnaire}
+\include{04codeValidation}
+\include{05saisirDonnees}
+\include{06statTableauBord}
+\include{07statClassic}
+\include{08statCalc}
+\include{09conclusion}
+\end{document}

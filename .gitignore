@@ -1,0 +1,31 @@
+# Fichiers temporaires de LaTeX
+*.aux
+*.log
+*.toc
+*.lof
+*.lot
+*.lol
+*.out
+*.maf
+*.mtc*
+*.idx
+*.ind
+*.ilg
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.xdv
+
+# PDF compilé : publié dans les Releases GitHub, pas dans le dépôt
+*.pdf
+
+# Fichiers d'éditeurs et de système
+img/.metadata/
+.metadata/
+*.bak
+*~
+.DS_Store
+Thumbs.db

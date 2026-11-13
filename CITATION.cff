@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "Si vous utilisez ce guide, merci de le citer comme indiqué ci-dessous."
+title: "Apprendre Epi Info 7 : guide pratique d'analyse épidémiologique et statistique"
+type: software
+authors:
+  - family-names: "OUEDRAOGO"
+    given-names: "Ahmed Dieudonné"
+doi: "10.5281/zenodo.24182020"
+license: "CC-BY-NC-SA-4.0"
+date-released: "2026-11-13"
+version: "1.0"
+keywords:
+  - "Epi Info"
+  - "épidémiologie"
+  - "biostatistique"
+  - "analyse de données"
+  - "santé publique"
+preferred-citation:
+  type: book
+  title: "Apprendre Epi Info 7 : guide pratique d'analyse épidémiologique et statistique"
+  authors:
+    - family-names: "OUEDRAOGO"
+      given-names: "Ahmed Dieudonné"
+  doi: "10.5281/zenodo.24182020"
+  year: 2026
+  publisher:
+    name: "Zenodo"
+  languages:
+    - "fr"
+  license: "CC-BY-NC-SA-4.0"

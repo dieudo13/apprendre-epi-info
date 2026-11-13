@@ -1,0 +1,54 @@
+\chapter{Saisir des données}
+\label{saisirDonnees}
+%\minitoc
+
+Lorsque le questionnaire est prêt, et avant de commencer la collecte des vraies données, nous devons le tester pour nous assurer qu'il se comporte comme prévu. Cette étape ne doit pas être négligée : si vous commencez la collecte et découvrez plus tard un problème dans un champ, sa correction peut vous faire perdre les données déjà saisies.
+
+\section{Ouvrir un formulaire pour la saisie}
+
+Pour saisir des données :
+\begin{enumerate}
+	\item Ouvrir le module \module{saisir des données} d'Epi Info 7 ;
+	\item Cliquer sur \kw{Ouvrir le Formulaire} dans la barre d'outils (ou dans le menu \kw{Fichier}). La fenêtre \kw{Ouvrir le Formulaire} s'ouvre (\autoref{fig:ouvrirformulaire}) ;
+	\item Dans \kw{Projet en Cours}, cliquer sur \kw{Parcourir} et sélectionner notre projet, le fichier \var{COVID19.prj} ;
+	\item Dans la liste \kw{Formulaires}, sélectionner \var{Formulaire1} et valider par \kw{OK} ;
+	\item À la première ouverture, une seconde fenêtre intitulée \kw{Propriétés de la table de données} apparaît, avec le nom de la table de données, ici \var{Formulaire1}, et l'identifiant de départ, \kw{1}. Cliquer sur \kw{OK}.
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{img/saisirDonnees/ouvrirFormulaire}
+	\caption{Ouvrir un formulaire dans le module Saisir des données}
+	\label{fig:ouvrirformulaire}
+\end{figure}
+
+\begin{mybox}[colbacktitle=TIP]{\faLightbulb{} CONSEIL}
+Vous pouvez passer du module \module{créer questionnaires} au module \module{saisir des données} sans quitter l'un pour ouvrir l'autre : cliquez sur \kw{Saisir des données} dans le premier, et sur \kw{Éditer le formulaire} dans le second.
+\end{mybox}
+
+\section{Saisir et enregistrer un enregistrement}
+
+Le formulaire s'affiche tel que nous l'avons conçu, avec un enregistrement vide. Pour le remplir :
+
+\begin{enumerate}
+	\item Saisir la réponse dans le premier champ, puis appuyer sur la touche \kw{Tabulation} (ou \kw{Entrée}) pour passer au champ suivant, dans l'ordre de tabulation défini au chapitre~\ref{creerQuestionnaire} ;
+	\item Observer au passage le comportement du code de contrôle : l'âge et l'IMC doivent se calculer seuls, une taille de 350~cm doit déclencher le message d'alerte, et les questions sur la non-vaccination ne doivent s'activer que si la personne n'est pas vaccinée ;
+	\item Pour changer de page, utiliser la liste des pages dans le volet de gauche ;
+	\item Une fois tous les champs remplis, cliquer sur \kw{Nouvel enregistrement} pour passer à la fiche suivante.
+\end{enumerate}
+
+Epi Info enregistre automatiquement la fiche lorsque l'on passe à un nouvel enregistrement, que l'on change d'enregistrement ou que l'on ferme le formulaire. Le bouton \kw{Enregistrer} permet aussi de sauvegarder à tout moment. Si un champ requis est vide, Epi Info empêche l'enregistrement de la fiche et le signale.
+
+\section{Naviguer et rechercher dans les enregistrements}
+
+La barre d'outils du module permet de se déplacer d'un enregistrement à l'autre : premier, précédent, suivant, dernier. On peut aussi taper directement le numéro de la fiche recherchée. Le bouton \kw{Rechercher} permet de retrouver une fiche à partir de la valeur d'un ou de plusieurs champs, par exemple le nom de la personne enquêtée.
+
+Pour supprimer une fiche saisie par erreur, l'afficher puis cliquer sur \kw{Supprimer}. La fiche est alors marquée comme supprimée et n'est plus prise en compte dans les analyses ; le bouton \kw{Restaurer} permet d'annuler cette suppression.
+
+\section{Tester le questionnaire puis le réinitialiser}
+
+Pour le test, nous saisissons quelques fiches avec des données fictives, en essayant volontairement des valeurs erronées pour vérifier que les contrôles fonctionnent. Si le test est concluant, il faut réinitialiser le questionnaire afin de commencer la collecte avec une table vide. Pour cela, dans le module \module{créer questionnaires}, cliquer sur le menu \kw{Outils} puis sur \kw{Supprimer la table de données}. La procédure est la même si le test révèle des incohérences à corriger dans le questionnaire.
+
+\begin{mybox}[colbacktitle=IMPORTANT]{\faExclamationCircle{} IMPORTANT}
+Une fois des données saisies, certaines modifications du questionnaire (supprimer un champ, changer son type ou son nom) ne sont plus possibles ou font perdre les données correspondantes. Pour modifier en profondeur le questionnaire après le test, supprimez d'abord la table de données. Une fois la collecte commencée, évitez de modifier la structure du questionnaire.
+\end{mybox}
